@@ -12,11 +12,8 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.hardware.Light;
-import org.firstinspires.ftc.teamcode.hardware.LightMode;
-import org.firstinspires.ftc.teamcode.hardware.RobotControlArm;
-import org.firstinspires.ftc.teamcode.hardware.RobotControlFlipperMotor;
-import org.firstinspires.ftc.teamcode.hardware.RobotControlGripperServos;
+//import org.firstinspires.ftc.teamcode.hardware.Light;
+//import org.firstinspires.ftc.teamcode.hardware.LightMode;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlLights;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -61,25 +58,16 @@ public class AutonBase extends LinearOpMode {
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
-    RobotCameraHandler robotCameraHandler;
+    //RobotCameraHandler robotCameraHandler;
     RobotControlLights lights;
-    RobotControlGripperServos clawServo1;
-    RobotControlGripperServos clawServo2;
-    RobotControlArm armMotor;
-    RobotControlFlipperMotor flipper;
 
     public void initialize() {
         theHardwareMap  = new RobotHardwareMap(hardwareMap, this);
-        robotCameraHandler = new RobotCameraHandler(theHardwareMap, this);
+        //robotCameraHandler = new RobotCameraHandler(theHardwareMap, this);
         lights = new RobotControlLights(theHardwareMap, this);
 
         theHardwareMap.initialize();
-        robotCameraHandler.initialize();
-        clawServo1 = new RobotControlGripperServos(theHardwareMap, this, "ServoClaw1");
-        clawServo2 = new RobotControlGripperServos(theHardwareMap, this, "ServoClaw2");
-        armMotor = new RobotControlArm(theHardwareMap,this);
-        flipper = new RobotControlFlipperMotor(theHardwareMap, this);
-
+        //robotCameraHandler.initialize();
 
         imu = theHardwareMap.chImu;
 
@@ -240,7 +228,6 @@ public class AutonBase extends LinearOpMode {
                 // Apply the turning correction to the current driving speed.
                 moveRobot(driveSpeed, turnSpeed);
             }
-            telemetry.addData("Arm ENcoder; ", armMotor.getArmEncodedPosition());
 
             // Stop all motion & Turn off RUN_TO_POSITION
             moveRobot(0, 0);
