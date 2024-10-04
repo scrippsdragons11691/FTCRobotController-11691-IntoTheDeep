@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Log;
 import android.util.Size;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+//import com.acmerobotics.dashboard.FtcDashboard;
+//import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -33,8 +33,8 @@ public class TeleOpMain extends LinearOpMode {
         RobotHardwareMap theHardwareMap = new RobotHardwareMap(this.hardwareMap, this);
         theHardwareMap.initialize();
 
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        //telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
         RobotControlMechanum robotDrive = new RobotControlMechanum(theHardwareMap, this);
         robotDrive.initialize();
@@ -42,19 +42,17 @@ public class TeleOpMain extends LinearOpMode {
         RobotControlLights lights = new RobotControlLights(theHardwareMap, this);
         AutonBase autonBase = new AutonBase();
 
-        DistanceSensor distanceSensor = theHardwareMap.baseHMap.get(DistanceSensor.class, "distance");
-        final int DISTANCE_FROM_BACKBOARD = 7;
+        //DistanceSensor distanceSensor = theHardwareMap.baseHMap.get(DistanceSensor.class, "distance");
+        //final int DISTANCE_FROM_BACKBOARD = 7;
 
 
         lights.switchLight(Light.ALL, LightMode.GREEN);
-
-        /*FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());*/
 
         telemetry.addData("Robot", "Initialized successfully");
         telemetry.update();
 
         // waitForStart();
+        /*
         AprilTagProcessor aprilTagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
                 .setDrawTagID(true)
@@ -69,7 +67,7 @@ public class TeleOpMain extends LinearOpMode {
                 .enableLiveView(true)
                 .setAutoStopLiveView(true)
                 .build();
-
+        */
 
         // do something in init mode?
         while (opModeInInit()) {
@@ -116,14 +114,14 @@ public class TeleOpMain extends LinearOpMode {
 
             //Speed values for slow mode
             if (slowMode) {
-                drive *= 0.6;
-                strafe *= 0.6;
-                twist *= 0.6;
+                drive *= 0.3;
+                strafe *= 0.3;
+                twist *= 0.3;
 
             } else { // non slow mode is only 75% power
-                drive *= 1;
-                strafe *= 1;
-                twist *= 1;
+                drive *= .7;
+                strafe *= .7;
+                twist *= .7;
             }
 
             robotDrive.teleOpMechanum(drive, strafe, twist);
@@ -147,7 +145,7 @@ public class TeleOpMain extends LinearOpMode {
             //telemetry.clear();
 
             if (1 == 0) {
-
+                /*
                 List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
 
                 //loop through the AprilTag detections to see what we found
@@ -178,6 +176,8 @@ public class TeleOpMain extends LinearOpMode {
                         robotDrive.teleOpMechanum(0, 0, twistAmount);
                     }
                 }
+
+                 */
             }
 
             //telemetry.addData("Pot Position", robotControlFlipperPotentiometer.getCurrentPotPosition());
@@ -185,11 +185,11 @@ public class TeleOpMain extends LinearOpMode {
             //telemetry.addData("Servo 1: ", clawServo1.getCurrentPosition().getServoPos());
             //telemetry.addData("Servo 2: ", clawServo2.getCurrentPosition().getServoPos());
             //telemetry.addData("Drone Launcher: ", servoLauncher.getCurrentPosition().getServoPos());
-            telemetry.update();
+            //telemetry.update();
         }
 
-        telemetry.addData("Status", "Stopped");
-        telemetry.update();
+        //telemetry.addData("Status", "Stopped");
+        //telemetry.update();
 
     }
 }
