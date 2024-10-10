@@ -46,6 +46,11 @@ public class AutonBase extends LinearOpMode {
 
     private final ElapsedTime     runtime = new ElapsedTime();
 
+
+    double autonFast = .7;
+    double autonMedium = .5;
+    double autonSlow = .3;
+
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
     // For external drive gearing, set DRIVE_GEAR_REDUCTION as needed.
