@@ -22,47 +22,59 @@ public class AutonTest extends AutonBase {
         //CODE
 
         //Deliver Specimen
-        imuDrive(0.43, 22, 0);
-        encoderStrafe(0.43, 12, 5);
-        imuTurn(0.43,90);
-        encoderStrafe(0.43,-8,5);
-        encoderStrafe(0.34,5,5);
-        imuTurn(0.43,-90);
-        imuDrive(0.43,-3,0);
+        imuDrive(autonMedium, 22, 0);
+        encoderStrafe(autonMedium, 12, 5);
+        imuTurn(autonMedium,90);
+        encoderStrafe(autonMedium,-8,5);
+        encoderStrafe(autonMedium,5,5);
+        imuTurn(autonMedium,-90);
+        imuDrive(autonMedium,-3,0);
         //imuDrive(0.43,45,0);
         sleep(2000);
 
         //get and deliver first sample
         //imuTurn(0.43,-5);
         //imuDrive(0.43, -5, 0);
-        imuTurn(0.43, -90);
-        imuDrive(0.43, 43, 0);
-        imuTurn(0.43, 90);
-        imuDrive(0.43,5,0);
-        imuDrive(0.43,-5,0);
+        imuTurn(autonMedium, -90);
+        imuDrive(autonMedium, 43, 0);
+        imuTurn(autonMedium, 90);
+        imuDrive(autonMedium,5,0);
+        imuDrive(autonMedium,-5,0);
         sleep(500);
-        encoderStrafe(.43, -10.5, 5);
-        imuDrive(0.43, -17, 0);
-        imuTurn(.4, 45); //square up with basket
+        encoderStrafe(autonMedium, -10.5, 5);
+        imuDrive(autonMedium, -17, 0);
+        imuTurn(autonMedium, 45); //square up with basket
         //encoderStrafe(.43,4,5);
         sleep(1500);
-        imuTurn(.4, -45);
+        imuTurn(autonMedium, -45);
 
 
         //get and deliver second sample
-        imuDrive(.43, 20, 0);
-        encoderStrafe(0.43,5,5);
-        imuDrive(.43, -16.75, 0);
-        imuTurn(.4, 45); //square up with basket
+        imuDrive(autonMedium, 20, 0);
+        encoderStrafe(autonMedium,-5,5);
+        imuDrive(autonMedium, -17.25, 0);
+        imuTurn(autonMedium, 45); //square up with basket
         sleep(1500);
-        imuTurn(.4, -45);
+        imuTurn(autonMedium, -45);
 
+        //get and deliver third sample
+        encoderStrafe(autonMedium,15,3);
+        imuDrive(autonMedium,29,0);
+        imuTurn(autonMedium,-90);
+        imuDrive(autonMedium,15,0);
+        imuDrive(autonMedium,-5,0);
+        imuTurn(autonMedium,90);
+        imuDrive(autonMedium,-24,0);
+        encoderStrafe(autonMedium,-5,3);
+        imuTurn(autonMedium,45);
         //park close to wall
         /*imuTurn(.43,45);
         imuDrive(.7,111,0);
-        encoderStrafe(.5,15,3);
+        encoderStrafe(.5,15,3);*/
+        //park closer to submersible
 
-         */
+
+
 
 
 
