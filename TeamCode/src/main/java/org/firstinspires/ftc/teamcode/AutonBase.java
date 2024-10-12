@@ -47,7 +47,7 @@ public class AutonBase extends LinearOpMode {
     private final ElapsedTime     runtime = new ElapsedTime();
 
 
-    double autonFast = .7;
+    double autonFast = .75;
     double autonMedium = .5;
     double autonSlow = .3;
 
