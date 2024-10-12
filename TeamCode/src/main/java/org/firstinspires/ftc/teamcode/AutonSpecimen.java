@@ -12,7 +12,12 @@ public class AutonSpecimen extends AutonBase{
         initialize();
         waitForStart();
 
-        imuDrive(autonFast, 20, 0);
+        imuDrive(autonFast, 24, 0);
+        //HANG THE SPECIMEN
+        sleep (2000);
+        imuDrive(autonFast,-20,0);
+        encoderStrafe (autonFast,51,2000);
+
     }
 
 }

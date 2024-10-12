@@ -24,19 +24,19 @@ public class AutonTest extends AutonBase {
         //Deliver Specimen
         imuDrive(autonFast, 22, 0);
         encoderStrafe(autonFast, 14, 5);
-        imuTurn(autonMedium,90);
-        encoderStrafe(autonMedium,-8,5);
+        imuTurn(autonMedium, 90);
+        encoderStrafe(autonMedium, -8, 5);
         sleep(1000);
-        encoderStrafe(autonMedium,5,5);
-        imuTurn(autonMedium,-90);
-        imuDrive(autonMedium,-3,0);
+        encoderStrafe(autonMedium, 5, 5);
+        imuTurn(autonMedium, -90);
+        imuDrive(autonMedium, -3, 0);
 
         //get and deliver first sample
         imuTurn(autonMedium, -90);
         imuDrive(autonFast, 43, 0);
         imuTurn(autonMedium, 90);
-        imuDrive(autonFast,5,0);
-        imuDrive(autonFast,-5,0);
+        imuDrive(autonFast, 5, 0);
+        imuDrive(autonFast, -5, 0);
         encoderStrafe(autonMedium, -10.5, 5);
         imuDrive(autonFast, -17, 0);
         imuTurn(autonMedium, 45); //square up with basket
@@ -60,17 +60,18 @@ public class AutonTest extends AutonBase {
         imuTurn(autonMedium,90);
         imuDrive(autonFast,-24,0);
         encoderStrafe(autonFast,-5,3);
-        imuTurn(autonFast,45);*/
+        imuTurn(autonFast,45);
+        */
 
-        /*close to wall strafe
-        encoderStrafe(autonFast,9.25,2);
-        imuDrive(autonFast,111,0);*/
+        //close to wall strafe
+        encoderStrafe(autonFast, 13, 2);
+        imuDrive(autonFast, 111, 0);
 
         //close to submersible strafe
-        encoderStrafe(autonFast,-21.5,3);
+        /*encoderStrafe(autonFast,-21,3);
         imuDrive(autonFast,111,0);
-        encoderStrafe(autonFast,21.5,3);
-
+        encoderStrafe(autonFast,23,10);
+        */
 
 
 
