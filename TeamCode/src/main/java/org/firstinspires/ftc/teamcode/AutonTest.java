@@ -60,22 +60,19 @@ public class AutonTest extends AutonBase {
         imuTurn(autonMedium,90);
         imuDrive(autonFast,-24,0);
         encoderStrafe(autonFast,-5,3);
-        imuTurn(autonFast,45);
-        */
+        imuTurn(autonFast,45); */
+
+        //touch low rung
+        imuDrive(autonFast,25,0);
 
         //close to wall strafe
-        encoderStrafe(autonFast, 13, 2);
-        imuDrive(autonFast, 111, 0);
+      /*encoderStrafe(autonFast, 13, 2);
+        imuDrive(autonFast, 111, 0);*/
 
         //close to submersible strafe
         /*encoderStrafe(autonFast,-21,3);
         imuDrive(autonFast,111,0);
         encoderStrafe(autonFast,23,10);
         */
-
-
-
-
     }
-
 }
