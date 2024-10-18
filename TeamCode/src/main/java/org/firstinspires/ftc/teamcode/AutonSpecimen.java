@@ -12,12 +12,28 @@ public class AutonSpecimen extends AutonBase{
         initialize();
         waitForStart();
 
-        imuDrive(autonFast, 24, 0);
-        //HANG THE SPECIMEN
-        sleep (2000);
-        imuDrive(autonFast,-20,0);
-        encoderStrafe (autonFast,51,2000);
+        imuDrive(autonMedium, 27, 0);
+        sleep(1000);
+        imuDrive(autonMedium, -3,0);
+        imuTurn(autonMedium,90);
+        imuDrive(autonMedium, 24,0);
+        encoderStrafe(autonMedium, -31, 5);
+        imuDrive(autonMedium,12,0);
+        imuTurn(autonMedium,90);
+        imuDrive(autonMedium,44,0);
+        imuDrive(autonMedium,-44,0);
+        encoderStrafe(autonMedium,-12,5);
+        imuDrive(autonMedium, 44, 0);
 
+        /*
+        imuTurn(autonMedium,180);
+        imuDrive(autonMedium,13.5,0);
+        imuDrive(autonMedium,-10, 0);
+        encoderStrafe(autonMedium,-8,5);
+        imuTurn(autonMedium,180);
+        imuTurn(autonMedium,180);
+        imuDrive(autonMedium,13.5,0);
+        */
     }
 
 }

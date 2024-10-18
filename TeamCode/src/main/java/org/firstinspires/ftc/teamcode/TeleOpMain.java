@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Log;
 import android.util.Size;
 
-//import com.acmerobotics.dashboard.FtcDashboard;
-//import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.hardware.RobotCamera;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlLights;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlMechanum;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -33,8 +34,8 @@ public class TeleOpMain extends LinearOpMode {
         RobotHardwareMap theHardwareMap = new RobotHardwareMap(this.hardwareMap, this);
         theHardwareMap.initialize();
 
-        //FtcDashboard dashboard = FtcDashboard.getInstance();
-        //telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
         RobotControlMechanum robotDrive = new RobotControlMechanum(theHardwareMap, this);
         robotDrive.initialize();
@@ -42,9 +43,11 @@ public class TeleOpMain extends LinearOpMode {
         RobotControlLights lights = new RobotControlLights(theHardwareMap, this);
         AutonBase autonBase = new AutonBase();
 
+        RobotCamera camera = new RobotCamera(theHardwareMap, this);
+        camera.initialize();
+
         //DistanceSensor distanceSensor = theHardwareMap.baseHMap.get(DistanceSensor.class, "distance");
         //final int DISTANCE_FROM_BACKBOARD = 7;
-
 
         lights.switchLight(Light.ALL, LightMode.GREEN);
 
@@ -52,22 +55,6 @@ public class TeleOpMain extends LinearOpMode {
         telemetry.update();
 
         // waitForStart();
-        /*
-        AprilTagProcessor aprilTagProcessor = new AprilTagProcessor.Builder()
-                .setDrawAxes(true)
-                .setDrawTagID(true)
-                .setDrawCubeProjection(true)
-                .setDrawTagOutline(true)
-                .build();
-        VisionPortal visionPortal = new VisionPortal.Builder()
-                .addProcessor(aprilTagProcessor)
-                .setCamera(theHardwareMap.frontCamera)
-                .setCameraResolution(new Size(640, 480))
-                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
-                .enableLiveView(true)
-                .setAutoStopLiveView(true)
-                .build();
-        */
 
         // do something in init mode?
         while (opModeInInit()) {
@@ -143,6 +130,9 @@ public class TeleOpMain extends LinearOpMode {
             //Check for detections
             lights.switchLight(Light.LED1, LightMode.OFF);
             //telemetry.clear();
+
+            //Vision enablement
+
 
             if (1 == 0) {
                 /*
