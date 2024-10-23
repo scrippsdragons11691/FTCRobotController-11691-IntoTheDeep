@@ -2,28 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Auton Test", group = "Autons")
-public class AutonTest extends AutonBase {
+@Autonomous(name = "Auton Sample", group = "Autons")
+public class AutonSample extends AutonBase {
 
     @Override
     public void runOpMode() {
 
         initialize();
         waitForStart();
-        robotCamera RobotCamera =
-        /*
-        imuDrive(0.5, 20, 0);
-        encoderStrafe(0.25, -8, 5);
-        imuDrive(0.25, 6, 0);
-        imuTurn(0.5, 87);
-        imuDrive(0.75, 87, 0);
-        sleep(4000);
-        encoderStrafe(.75, 27, 2000);
-        imuDrive(0.5, 12, 0);*/
-        //CODE
 
         //Deliver Specimen
-        /*
         imuDrive(autonFast, 21, 0);
         encoderStrafe(autonFast, 14, 5);
         imuTurn(autonFast, 90);
@@ -67,16 +55,16 @@ public class AutonTest extends AutonBase {
 
         //touch low rung
         //imuDrive(autonFast,25,0);
-        */
-
-
 
         //close to wall strafe
-      /*encoderStrafe(autonFast, 13, 2);
-        imuDrive(autonFast, 111, 0);*/
+        /*
+        encoderStrafe(autonFast, 13, 2);
+        imuDrive(autonFast, 111, 0);
+        */
 
         //close to submersible strafe
-        /*encoderStrafe(autonFast,-21,3);
+        /*
+        encoderStrafe(autonFast,-21,3);
         imuDrive(autonFast,111,0);
         encoderStrafe(autonFast,23,10);
         */
