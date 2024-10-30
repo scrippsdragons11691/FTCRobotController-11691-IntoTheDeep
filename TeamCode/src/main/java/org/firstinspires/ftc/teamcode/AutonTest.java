@@ -10,7 +10,7 @@ public class AutonTest extends AutonBase {
 
         initialize();
         waitForStart();
-        robotCamera RobotCamera =
+        //robotCamera RobotCamera =
         /*
         imuDrive(0.5, 20, 0);
         encoderStrafe(0.25, -8, 5);

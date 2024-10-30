@@ -48,7 +48,7 @@ public class RobotHardwareMap {
 
     private final int baseResolution_x = 320;
     private final int baseResolution_y = 240;
-    public WebcamName frontCamera;
+    public WebcamName sideCamera;
 
     boolean controlHubBatteryVoltageEnabled = true;
     boolean expansionHubBatteryVoltageEnabled = true;
@@ -75,12 +75,14 @@ public class RobotHardwareMap {
         frontRightMotor = baseHMap.get(DcMotorEx.class, "FR");
 
         //Camera
+
         try {
-            frontCamera = baseHMap.get(WebcamName.class, "Front Camera");
+            sideCamera = baseHMap.get(WebcamName.class, "Front Camera");
             opMode.telemetry.addData("cameras", "success ");
         } catch (IllegalArgumentException iae){
             opMode.telemetry.addData("cameras", iae.getMessage());
         }
+
 
         //Initializes the IMU
         try {
