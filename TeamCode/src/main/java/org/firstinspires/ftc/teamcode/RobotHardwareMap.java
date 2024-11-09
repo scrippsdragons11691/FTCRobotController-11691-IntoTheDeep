@@ -18,6 +18,8 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
+import org.firstinspires.ftc.teamcode.hardware.ControlModes;
+
 /***
  *
  * robot hardware map
@@ -49,9 +51,12 @@ public class RobotHardwareMap {
     private final int baseResolution_x = 320;
     private final int baseResolution_y = 240;
     public WebcamName sideCamera;
+    public ControlModes mode = ControlModes.MANUAL;
 
     boolean controlHubBatteryVoltageEnabled = true;
     boolean expansionHubBatteryVoltageEnabled = true;
+
+    public Servo gripperServo;
 
     public RobotHardwareMap(HardwareMap baseHMap, LinearOpMode opmode) {
 
@@ -77,7 +82,7 @@ public class RobotHardwareMap {
         //Camera
 
         try {
-            sideCamera = baseHMap.get(WebcamName.class, "Front Camera");
+            sideCamera = baseHMap.get(WebcamName.class, "Side Camera");
             opMode.telemetry.addData("cameras", "success ");
         } catch (IllegalArgumentException iae){
             opMode.telemetry.addData("cameras", iae.getMessage());

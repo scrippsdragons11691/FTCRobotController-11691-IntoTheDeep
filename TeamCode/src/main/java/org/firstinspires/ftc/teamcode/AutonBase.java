@@ -13,10 +13,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 //import org.firstinspires.ftc.teamcode.hardware.Light;
 //import org.firstinspires.ftc.teamcode.hardware.LightMode;
+import org.firstinspires.ftc.teamcode.hardware.ControlModes;
+import org.firstinspires.ftc.teamcode.hardware.RobotControlArm;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlLights;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
@@ -24,10 +24,9 @@ public class AutonBase extends LinearOpMode {
 
     /* Declare OpMode members. */
     RobotHardwareMap theHardwareMap;
-    AprilTagProcessor aprilTagProcessor;
     VisionPortal visionPortal;
 
-    private IMU imu         = null;
+    private IMU imu = null;
 
     private double targetHeading = 0;
     private double headingOffset = 0;
@@ -65,8 +64,11 @@ public class AutonBase extends LinearOpMode {
     //RobotCameraHandler robotCameraHandler;
     RobotControlLights lights;
 
+    RobotControlArm intakeArm;
+
     public void initialize() {
         theHardwareMap  = new RobotHardwareMap(hardwareMap, this);
+        theHardwareMap.mode = ControlModes.AUTO;
         //robotCameraHandler = new RobotCameraHandler(theHardwareMap, this);
         lights = new RobotControlLights(theHardwareMap, this);
 
@@ -94,6 +96,9 @@ public class AutonBase extends LinearOpMode {
         theHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         theHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         theHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        intakeArm = new RobotControlArm(theHardwareMap, this);
+        intakeArm.initialize();
 
         /*aprilTagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
@@ -327,37 +332,6 @@ public class AutonBase extends LinearOpMode {
         // Stop all motion;
         moveRobot(0, 0);
         resetHeading();
-    }
-
-    public void aprilTagAlignment(int tagNumber){
-        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
-
-        for (AprilTagDetection detection : currentDetections) {
-            //update the lights that we found one
-
-            //If we found something, display the data for it
-            if (detection.ftcPose != null) {
-                telemetry.addData("Tag Bearing", detection.ftcPose.bearing);
-                telemetry.addData("Tag Range", detection.ftcPose.range);
-                telemetry.addData("Tag Yaw", detection.ftcPose.yaw);
-                telemetry.addData("ID", detection.id);
-
-            }
-            //If we detect a specific apriltag and they are pressing X, then we are twisting to that angle
-            if (detection.id == tagNumber) {
-                telemetry.addData("Driveauto", detection.id);
-                double twistAmount = 0.25;
-                //adjust the twist based on the amount of yaw
-                //tweak the color for 5 and or 2
-                //add support for finding 2
-                //test other buttons for ease of use
-
-                if (detection.ftcPose.yaw >= 0) {
-                    twistAmount = twistAmount * -1;
-                }
-                moveRobot(0, twistAmount);
-            }
-        }
     }
 
     private void moveRobot(double drive, double turn) {

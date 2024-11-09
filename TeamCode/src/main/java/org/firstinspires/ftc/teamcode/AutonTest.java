@@ -6,6 +6,7 @@ import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.hardware.ArmPositions;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
@@ -24,9 +25,9 @@ public class AutonTest extends AutonBase {
 
         //RobotCamera camera = new RobotCamera(theHardwareMap, this);
         //camera.initialize();
-        /*
+
         ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
-                .setTargetColorRange(ColorRange.RED)
+                .setTargetColorRange(ColorRange.BLUE)
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-1,0.8,1,-0.1))
                 .setDrawContours(true)
@@ -92,18 +93,22 @@ public class AutonTest extends AutonBase {
             telemetry.update();
         }
 
-
         //Initialize remaining variables
-        */
+
         //Main Loop
         waitForStart();
+        //Set the arm motor to the drive position
+        intakeArm.moveArmEncoded(ArmPositions.DRIVE);
+        sleep(5000);
+
+        imuDrive(autonSlow,10,0);
 
         //imuDrive(autonSlow,adjustDistance,0);
 
         telemetry.addLine("I was running");
         telemetry.update();
 
-        imuDrive(autonSlow,10,0);
+        //imuDrive(autonSlow,10,0);
 
         //robotCamera RobotCamera =
         /*

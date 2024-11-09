@@ -12,11 +12,16 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.teamcode.hardware.ControlModes;
+import org.firstinspires.ftc.teamcode.hardware.GripperPositions;
+import org.firstinspires.ftc.teamcode.hardware.RobotControlArm;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlLights;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlMechanum;
 import org.firstinspires.ftc.teamcode.hardware.Light;
 import org.firstinspires.ftc.teamcode.hardware.LightMode;
 import org.firstinspires.ftc.teamcode.hardware.RobotCamera;
+import org.firstinspires.ftc.teamcode.hardware.RobotControlSpecimenLifter;
+import org.firstinspires.ftc.teamcode.hardware.RobotControlGripperServo;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
@@ -38,22 +43,33 @@ public class TeleOpMain extends LinearOpMode {
         //Initialize hardware
         RobotHardwareMap theHardwareMap = new RobotHardwareMap(this.hardwareMap, this);
         theHardwareMap.initialize();
+        theHardwareMap.mode = ControlModes.MANUAL;
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+        telemetry.clearAll();
 
         RobotControlMechanum robotDrive = new RobotControlMechanum(theHardwareMap, this);
         robotDrive.initialize();
 
-        RobotControlLights lights = new RobotControlLights(theHardwareMap, this);
+        RobotControlSpecimenLifter specimenLifter = new RobotControlSpecimenLifter(theHardwareMap,this);
+        specimenLifter.initialize();
+
+        RobotControlGripperServo gripperServo = new RobotControlGripperServo(theHardwareMap,this);
+        gripperServo.initialize();
+
+        RobotControlArm intakeArm = new RobotControlArm(theHardwareMap,this);
+        intakeArm.initialize();
+
+        //RobotControlLights lights = new RobotControlLights(theHardwareMap, this);
+
         AutonBase autonBase = new AutonBase();
 
         //RobotCamera camera = new RobotCamera(theHardwareMap, this);
         //camera.initialize();
-        telemetry.addLine("here");
-        telemetry.update();
 
         /*
+        //Vision to detect specimen
         ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
                        .setTargetColorRange(ColorRange.BLUE)
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)
@@ -96,10 +112,11 @@ public class TeleOpMain extends LinearOpMode {
 
         //lights.switchLight(Light.ALL, LightMode.GREEN);
 
-        //telemetry.addData("Robot", "Initialized successfully");
-        //telemetry.update();
 
         waitForStart();
+
+        telemetry.addData("Robot", "Initialized successfully");
+        telemetry.update();
 
         // do something in init mode?
         while (opModeInInit()) {
@@ -110,14 +127,14 @@ public class TeleOpMain extends LinearOpMode {
         //telemetry.addData("Robot", "running teleop.. press (Y) For telemetry");
         //telemetry.update();
 
-        lights.switchLight(Light.ALL, LightMode.OFF);
+        //lights.switchLight(Light.ALL, LightMode.OFF);
 
         //Initialize remaining variables
         double loopTimeStart = 0;
         boolean slowMode = true;
-        lights.switchLight(Light.LED1, LightMode.OFF);
-		lights.switchLight(Light.LED2, LightMode.GREEN);
-        boolean showTelemetry = false;
+        //lights.switchLight(Light.LED1, LightMode.OFF);
+		//lights.switchLight(Light.LED2, LightMode.GREEN);
+        boolean showTelemetry = true;
 
         //create some gamepads to look at debouncing
         Gamepad currentGamepad1 = new Gamepad();
@@ -151,9 +168,9 @@ public class TeleOpMain extends LinearOpMode {
                 twist *= 0.3;
 
             } else { // non slow mode is only 75% power
-                drive *= .7;
-                strafe *= .7;
-                twist *= .7;
+                drive *= 0.7;
+                strafe *= 0.7;
+                twist *= 0.7;
             }
 
             robotDrive.teleOpMechanum(drive, strafe, twist);
@@ -161,27 +178,87 @@ public class TeleOpMain extends LinearOpMode {
             //slow mode
             if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
                 slowMode = true;
-                lights.switchLight(Light.LED2, LightMode.GREEN);
+                //lights.switchLight(Light.LED2, LightMode.GREEN);
             } else if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
                 slowMode = false;
-                lights.switchLight(Light.LED2, LightMode.YELLOW);
+                //lights.switchLight(Light.LED2, LightMode.YELLOW);
             }
 
-
-            telemetry.addData("Front Left Position:",theHardwareMap.frontLeftMotor.getCurrentPosition());
-            telemetry.addData("Front Right Position:",theHardwareMap.frontRightMotor.getCurrentPosition());
-            telemetry.addData("Back Left Position:",theHardwareMap.backLeftMotor.getCurrentPosition());
-            telemetry.addData("Back Right Position:",theHardwareMap.backRightMotor.getCurrentPosition());
-            telemetry.update();
+            /*
+            //Used to debug wiring/config issues with drive motors
+            if (currentGamepad1.y)
+            {
+                theHardwareMap.backLeftMotor.setPower(.2);
+            }
+            else
+            {
+                theHardwareMap.backLeftMotor.setPower(0);
+            }
+            */
 
             /***************
              * Gamepad 2
              */
 
+            telemetry.addData("Gripper Position",gripperServo.getActualPosition());
+
+            //Open and close the gripper
+            if (currentGamepad2.a && !previousGamepad2.a)
+            {
+                gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
+            }
+            else if (!currentGamepad2.a && previousGamepad2.a)
+            {
+                gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
+            }
+
+            //Raise/lower the specimen lifter
+            if (currentGamepad2.dpad_up)
+            {
+                specimenLifter.moveLifterPower(0.5);
+            }
+            else if(previousGamepad2.dpad_up && !currentGamepad2.dpad_up)
+            {
+                specimenLifter.moveLifterPower(0);
+            }
+            if (currentGamepad2.dpad_down)
+            {
+                specimenLifter.moveLifterPower(-0.5);
+            }
+            else if(previousGamepad2.dpad_down && !currentGamepad2.dpad_down)
+            {
+                specimenLifter.moveLifterPower(0);
+            }
+
+            //Change the intake arm position
+            if (currentGamepad2.right_stick_y != 0)
+            {
+                intakeArm.moveArmPower(-1 * currentGamepad2.right_stick_y);
+                telemetry.addData("Arm Position:",intakeArm.getArmEncodedPosition());
+            }
+
+            //Extend/retract the intake
+
+            //Turn on/reverse the intake
+
+            //Motor encoder debugging
+            if ( 1==0 )
+            {
+                telemetry.addData("Front Left:", theHardwareMap.frontLeftMotor.getCurrentPosition());
+                telemetry.addData("Front Right:", theHardwareMap.frontRightMotor.getCurrentPosition());
+                telemetry.addData("Back Left:", theHardwareMap.backLeftMotor.getCurrentPosition());
+                telemetry.addData("Back Right:", theHardwareMap.backRightMotor.getCurrentPosition());
+            }
+
+            if (showTelemetry = true)
+            {
+                //telemetry.addData("Lifter Position", specimenLifter.);
+                telemetry.update();
+            }
+
         }
 
-        //telemetry.addData("Status", "Stopped");
-        //telemetry.update();
-
+        telemetry.addData("Status", "Stopped");
+        telemetry.update();
     }
 }

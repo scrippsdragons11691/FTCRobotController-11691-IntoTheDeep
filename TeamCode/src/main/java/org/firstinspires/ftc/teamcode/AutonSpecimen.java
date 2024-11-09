@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.teamcode.hardware.ArmPositions;
+
 @Autonomous(name = "Auton Specimen", group = "Autons")
 
 public class AutonSpecimen extends AutonBase{
@@ -15,6 +18,10 @@ public class AutonSpecimen extends AutonBase{
         //for testing
         autonMedium = .4;
         autonSlow=0.15;
+
+        //Set the arm motor to the drive position
+        intakeArm.moveArmEncoded(ArmPositions.DRIVE);
+        sleep(100);
 
         //push 1st sample to observation zone
         encoderStrafe(autonMedium,-24,5);
