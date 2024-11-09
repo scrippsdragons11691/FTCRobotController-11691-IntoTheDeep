@@ -58,7 +58,7 @@ public class AutonBase extends LinearOpMode {
     // For gearing UP, use a gear ratio less than 1.0. Note this will affect the direction of wheel rotation.
     static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
-    static final double     WHEEL_DIAMETER_INCHES   = 3.937 ; //3.77953     // For figuring circumference
+    static final double     WHEEL_DIAMETER_INCHES   = 5.51 ; //3.77953     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
@@ -75,8 +75,8 @@ public class AutonBase extends LinearOpMode {
 
         imu = theHardwareMap.chImu;
 
-        theHardwareMap.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        theHardwareMap.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        theHardwareMap.backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        theHardwareMap.backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         theHardwareMap.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         theHardwareMap.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 

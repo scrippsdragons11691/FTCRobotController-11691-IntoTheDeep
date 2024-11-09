@@ -35,7 +35,7 @@ public class RobotGlobalSettings {
     // ====================== Rev Hex HD Motor 2240 counts per rotation
     public static double COUNTS_PER_MOTOR_REV =      537.6; ///< The number of encoder counts per output shaft revolution for 5202-0002-0019 GoBilda motor
     public static double DRIVE_GEAR_REDUCTION =       1; ///< The gear ration outside of the motor assembly
-    public static double WHEEL_DIAMETER_INCHES =     3.937; ///< The diameter of the drive wheels
+    public static double WHEEL_DIAMETER_INCHES =    5.5118; //3.937; ///< The diameter of the drive wheels
     public static double COUNTS_PER_INCH =(COUNTS_PER_MOTOR_REV / DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES*3.1415);
 
     public static double ImuCorrectionFactor = 0.04; ///< The gain value for IMU based corrections to moving in straight line.

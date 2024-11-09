@@ -24,6 +24,7 @@ public class AutonTest extends AutonBase {
 
         //RobotCamera camera = new RobotCamera(theHardwareMap, this);
         //camera.initialize();
+        /*
         ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
                 .setTargetColorRange(ColorRange.RED)
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)
@@ -93,14 +94,16 @@ public class AutonTest extends AutonBase {
 
 
         //Initialize remaining variables
-
+        */
         //Main Loop
         waitForStart();
 
-        imuDrive(autonSlow,adjustDistance,0);
+        //imuDrive(autonSlow,adjustDistance,0);
 
         telemetry.addLine("I was running");
         telemetry.update();
+
+        imuDrive(autonSlow,10,0);
 
         //robotCamera RobotCamera =
         /*

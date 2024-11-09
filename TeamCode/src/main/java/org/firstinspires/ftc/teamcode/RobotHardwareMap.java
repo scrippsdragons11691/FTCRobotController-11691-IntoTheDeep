@@ -89,7 +89,8 @@ public class RobotHardwareMap {
             chImu = baseHMap.get(IMU.class, "chImu");
             IMU.Parameters myIMUParamaters = new IMU.Parameters(
                     new RevHubOrientationOnRobot(
-                            RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
+                            //RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,  //This is for bucky
+                            RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                             RevHubOrientationOnRobot.UsbFacingDirection.UP
                     )
             );
@@ -97,16 +98,6 @@ public class RobotHardwareMap {
         } catch(IllegalArgumentException iae){
             opMode.telemetry.addData("IMU FAILURE",iae.getMessage());
         }
-
-        //Bucky Parameters
-        /*
-        IMU.Parameters myIMUParamaters = new IMU.Parameters(
-                    new RevHubOrientationOnRobot(
-                                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                                RevHubOrientationOnRobot.UsbFacingDirection.UP
-                    )
-        );*/
-
 
         opMode.telemetry.addData("Status", "done");
         opMode.telemetry.update();

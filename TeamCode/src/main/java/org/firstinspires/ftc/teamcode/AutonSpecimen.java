@@ -12,8 +12,12 @@ public class AutonSpecimen extends AutonBase{
         initialize();
         waitForStart();
 
+        //for testing
+        autonMedium = .4;
+        autonSlow=0.15;
+
         //push 1st sample to observation zone
-        encoderStrafe(autonMedium,-36,5);
+        encoderStrafe(autonMedium,-24,5);
         sleep(1000);
         encoderStrafe(autonMedium,9,5);
         imuDrive(autonMedium, 24,0);
@@ -23,9 +27,20 @@ public class AutonSpecimen extends AutonBase{
         imuDrive(autonMedium,48,0);
 
         imuDrive(autonMedium,-48,0);
-        encoderStrafe(autonMedium,-18,5);
+        encoderStrafe(autonMedium,-8.5,5);
         imuDrive(autonMedium, 49, 0);
-        imuDrive(autonMedium,-35,0);
+        imuDrive(autonMedium,-12,0);
+        imuTurn(autonSlow,90);
+        sleep(1000);
+        //Find specimen
+        encoderStrafe(autonMedium,-12,5);
+        //grab specimen
+        encoderStrafe(autonMedium,3,5);
+        imuDrive(autonMedium,47,0);
+        imuTurn(autonSlow,180);
+        encoderStrafe(autonMedium,-17,5);
+        //place specimen
+        /*imuDrive(autonMedium,-35,0);
         encoderStrafe(autonMedium,7,5);
         imuTurn(autonMedium,-90);
         imuDrive(autonMedium,9,0);
@@ -34,7 +49,7 @@ public class AutonSpecimen extends AutonBase{
         imuDrive(autonMedium,37,0);
         imuDrive(autonMedium,-15,0);
         sleep(3000);
-        imuDrive(autonMedium,15,0);
+        imuDrive(autonMedium,15,0);*\
 
 
         /*

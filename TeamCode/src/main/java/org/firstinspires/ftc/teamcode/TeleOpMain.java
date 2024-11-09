@@ -53,8 +53,9 @@ public class TeleOpMain extends LinearOpMode {
         telemetry.addLine("here");
         telemetry.update();
 
+        /*
         ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
-                .setTargetColorRange(ColorRange.BLUE)
+                       .setTargetColorRange(ColorRange.BLUE)
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-0.5,0.8,0.5,-0.1))
                 .setDrawContours(true)
@@ -72,6 +73,7 @@ public class TeleOpMain extends LinearOpMode {
                 .enableLiveView(false)
                 //.setAutoStopLiveView(true)
                 .build();
+        */
 
         //List of detected blobs
         //List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
@@ -165,6 +167,12 @@ public class TeleOpMain extends LinearOpMode {
                 lights.switchLight(Light.LED2, LightMode.YELLOW);
             }
 
+
+            telemetry.addData("Front Left Position:",theHardwareMap.frontLeftMotor.getCurrentPosition());
+            telemetry.addData("Front Right Position:",theHardwareMap.frontRightMotor.getCurrentPosition());
+            telemetry.addData("Back Left Position:",theHardwareMap.backLeftMotor.getCurrentPosition());
+            telemetry.addData("Back Right Position:",theHardwareMap.backRightMotor.getCurrentPosition());
+            telemetry.update();
 
             /***************
              * Gamepad 2
