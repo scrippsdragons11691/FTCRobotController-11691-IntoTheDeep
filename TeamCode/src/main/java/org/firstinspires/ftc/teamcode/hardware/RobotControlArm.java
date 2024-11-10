@@ -63,20 +63,36 @@ public class RobotControlArm {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             double currentPosition = armMotor.getCurrentPosition();
 
-            double upPowerFactor = 0.8;
-            double floatPower = 0.15;
+            double lowerPowerFloat = 0.01;
 
-            //If it is going down, we want to cap it to prevent it from slamming down
-            if (power < 0)
+            //Based on the position we adjsut the power automatically
+            if (currentPosition > 1000)
             {
-                armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                if (power > 0)
+                {
+                    armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                    power = lowerPowerFloat;
+                }
+                else if (power < 0)
+                {
+                    armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
+            }
+            else
+            {
+                //If it is going down, we want to cap it to prevent it from slamming down
+                if (power < 0)
+                {
+                    armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-                power = 0.01;
+                    power = lowerPowerFloat;
+                }
+                else if (power > 0)
+                {
+                    armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
             }
-            else if (power > 0)
-            {
-                armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
+
             armMotor.setPower(power);
         }
 

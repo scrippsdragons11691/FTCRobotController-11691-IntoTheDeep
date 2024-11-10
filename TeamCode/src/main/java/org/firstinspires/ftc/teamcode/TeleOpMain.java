@@ -65,53 +65,7 @@ public class TeleOpMain extends LinearOpMode {
 
         AutonBase autonBase = new AutonBase();
 
-        //RobotCamera camera = new RobotCamera(theHardwareMap, this);
-        //camera.initialize();
-
-        /*
-        //Vision to detect specimen
-        ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
-                       .setTargetColorRange(ColorRange.BLUE)
-                .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)
-                .setRoi(ImageRegion.asUnityCenterCoordinates(-0.5,0.8,0.5,-0.1))
-                .setDrawContours(true)
-                .setBlurSize(5)
-                .setBoxFitColor(Color.rgb(255, 120, 31))
-                .setRoiColor(Color.rgb(255, 255, 255))
-                .setContourColor(Color.rgb(3, 227, 252))
-                .build();
-
-        VisionPortal visionPortal = new VisionPortal.Builder()
-                .addProcessor(colorLocator)
-                .setCamera(theHardwareMap.sideCamera)
-                .setCameraResolution(new Size(640, 480))
-                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
-                .enableLiveView(false)
-                //.setAutoStopLiveView(true)
-                .build();
-        */
-
-        //List of detected blobs
-        //List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
-        //telemetry.addLine(" Area Density Aspect  Center");
-        /*
-        for (ColorBlobLocatorProcessor.Blob b : blobs)
-        {
-            RotatedRect boxFit = b.getBoxFit();
-            telemetry.addLine(String.format("%5d %4.2f %5.2f (%3d,%3d)",
-                    b.getContourArea(),b.getDensity(),b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y));
-        }
-
-         */
-        //telemetry.addLine("Post Blob Display");
-        //telemetry.update();
-
-
-        //DistanceSensor distanceSensor = theHardwareMap.baseHMap.get(DistanceSensor.class, "distance");
-        //final int DISTANCE_FROM_BACKBOARD = 7;
-
-        //lights.switchLight(Light.ALL, LightMode.GREEN);
-
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
 
         waitForStart();
 
@@ -123,9 +77,6 @@ public class TeleOpMain extends LinearOpMode {
             //telemetry.addData("Robot", "Initialized successfully. Ready to run?");
             //telemetry.update();
         }
-
-        //telemetry.addData("Robot", "running teleop.. press (Y) For telemetry");
-        //telemetry.update();
 
         //lights.switchLight(Light.ALL, LightMode.OFF);
 
@@ -200,14 +151,13 @@ public class TeleOpMain extends LinearOpMode {
              * Gamepad 2
              */
 
-            telemetry.addData("Gripper Position",gripperServo.getActualPosition());
 
             //Open and close the gripper
-            if (currentGamepad2.a && !previousGamepad2.a)
+            if (currentGamepad2.a)
             {
                 gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
             }
-            else if (!currentGamepad2.a && previousGamepad2.a)
+            else if (previousGamepad2.a && !currentGamepad2.a)
             {
                 gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
             }

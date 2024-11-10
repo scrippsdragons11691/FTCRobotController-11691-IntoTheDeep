@@ -28,13 +28,12 @@ public class RobotControlSpecimenLifter {
     }
     public void initialize(){
         try {
-            specimenMotor = robotHardwareMap.baseHMap.get(DcMotorEx.class, "Specimen");
+            specimenMotor = robotHardwareMap.baseHMap.get(DcMotorEx.class, "Specimen Motor");
             specimenMotor.setPower(0);
             specimenMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             specimenMotor.setDirection(DcMotorEx.Direction.REVERSE);
             specimenMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             specimenMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-            //specimenMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             specimenLifterInitialized = true;
             opMode.telemetry.addData("Specimen Motor", "initialized");
         } catch (IllegalArgumentException iae){
@@ -89,4 +88,15 @@ public class RobotControlSpecimenLifter {
             telemetry.addData("Specimen Lifter Encoder:", "Uninitialized!");
         }
     }
+
+    public void moveLifterEncoded(LifterPositions lifterTargetPosition){
+        if (specimenLifterInitialized){
+            //mode = ControlModes.AUTO;
+            int currentPosition = specimenMotor.getCurrentPosition();
+            specimenMotor.setTargetPosition(lifterTargetPosition.getEncodedPos());
+            specimenMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            specimenMotor.setPower(0.5);
+        }
+    }
+
 }

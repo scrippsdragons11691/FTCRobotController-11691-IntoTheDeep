@@ -14,8 +14,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 //import org.firstinspires.ftc.teamcode.hardware.Light;
 //import org.firstinspires.ftc.teamcode.hardware.LightMode;
 import org.firstinspires.ftc.teamcode.hardware.ControlModes;
+import org.firstinspires.ftc.teamcode.hardware.GripperPositions;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlArm;
+import org.firstinspires.ftc.teamcode.hardware.RobotControlGripperServo;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlLights;
+import org.firstinspires.ftc.teamcode.hardware.RobotControlSpecimenLifter;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.List;
@@ -65,6 +68,8 @@ public class AutonBase extends LinearOpMode {
     RobotControlLights lights;
 
     RobotControlArm intakeArm;
+    RobotControlSpecimenLifter specimenLifter;
+    RobotControlGripperServo gripperServo;
 
     public void initialize() {
         theHardwareMap  = new RobotHardwareMap(hardwareMap, this);
@@ -99,6 +104,13 @@ public class AutonBase extends LinearOpMode {
 
         intakeArm = new RobotControlArm(theHardwareMap, this);
         intakeArm.initialize();
+
+        specimenLifter = new RobotControlSpecimenLifter(theHardwareMap, this);
+        specimenLifter.initialize();
+
+        gripperServo = new RobotControlGripperServo(theHardwareMap, this);
+        gripperServo.initialize();
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_WIDE_OPEN);
 
         /*aprilTagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)

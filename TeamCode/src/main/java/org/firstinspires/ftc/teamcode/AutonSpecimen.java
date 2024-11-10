@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.hardware.ArmPositions;
+import org.firstinspires.ftc.teamcode.hardware.GripperPositions;
+import org.firstinspires.ftc.teamcode.hardware.LifterPositions;
 
 @Autonomous(name = "Auton Specimen", group = "Autons")
 
@@ -13,6 +15,7 @@ public class AutonSpecimen extends AutonBase{
     public void runOpMode() {
 
         initialize();
+
         waitForStart();
 
         //for testing
@@ -25,8 +28,15 @@ public class AutonSpecimen extends AutonBase{
 
         //push 1st sample to observation zone
         encoderStrafe(autonMedium,-24,5);
-        sleep(1000);
+
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP);
+        encoderStrafe(autonMedium,-3,5);
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
+
+        //Drive to push samples
         encoderStrafe(autonMedium,9,5);
+        specimenLifter.moveLifterEncoded(LifterPositions.PICKUP);
         imuDrive(autonMedium, 24,0);
         encoderStrafe(autonMedium, -34, 5);
         imuDrive(autonMedium,13.5,0);
@@ -41,33 +51,30 @@ public class AutonSpecimen extends AutonBase{
         sleep(1000);
         //Find specimen
         encoderStrafe(autonMedium,-12,5);
+
         //grab specimen
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
+
         encoderStrafe(autonMedium,3,5);
+        //specimenLifter.moveLifterEncoded(LifterPositions.BOTTOM);
+
+        //Drive back to submersisble
         imuDrive(autonMedium,47,0);
         imuTurn(autonSlow,180);
         encoderStrafe(autonMedium,-17,5);
-        //place specimen
-        /*imuDrive(autonMedium,-35,0);
-        encoderStrafe(autonMedium,7,5);
-        imuTurn(autonMedium,-90);
-        imuDrive(autonMedium,9,0);
-        imuTurn(autonMedium,90);
-        encoderStrafe(autonMedium,4,5);
-        imuDrive(autonMedium,37,0);
-        imuDrive(autonMedium,-15,0);
-        sleep(3000);
-        imuDrive(autonMedium,15,0);*\
 
+        //Deliver the specimen
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP);
+        encoderStrafe(autonSlow,3,5);
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
+        encoderStrafe(autonSlow,3,5);
 
-        /*
-        imuTurn(autonMedium,180);
-        imuDrive(autonMedium,13.5,0);
-        imuDrive(autonMedium,-10, 0);
-        encoderStrafe(autonMedium,-8,5);
-        imuTurn(autonMedium,180);
-        imuTurn(autonMedium,180);
-        imuDrive(autonMedium,13.5,0);
-        */
+        //Reset the drive motors to 0 before auton ends
+        specimenLifter.moveLifterEncoded(LifterPositions.BOTTOM);
+        intakeArm.moveArmEncoded(ArmPositions.PICKUP);
+
     }
 
 }
