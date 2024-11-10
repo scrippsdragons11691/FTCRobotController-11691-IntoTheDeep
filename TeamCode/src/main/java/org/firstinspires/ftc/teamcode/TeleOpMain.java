@@ -135,6 +135,9 @@ public class TeleOpMain extends LinearOpMode {
                 //lights.switchLight(Light.LED2, LightMode.YELLOW);
             }
 
+            //Allow the driver to lower the arm regardless of position and reset the encoder
+
+
             /*
             //Used to debug wiring/config issues with drive motors
             if (currentGamepad1.y)
@@ -191,7 +194,7 @@ public class TeleOpMain extends LinearOpMode {
 
             //Turn on/reverse the intake
 
-            //Motor encoder debugging
+            //Drive motor encoder debugging
             if ( 1==0 )
             {
                 telemetry.addData("Front Left:", theHardwareMap.frontLeftMotor.getCurrentPosition());
