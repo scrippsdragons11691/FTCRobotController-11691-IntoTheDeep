@@ -48,9 +48,9 @@ public class AutonBase extends LinearOpMode {
     private final ElapsedTime     runtime = new ElapsedTime();
 
 
-    double autonFast = .75;
-    double autonMedium = .5;
-    double autonSlow = .3;
+    double autonFast = .6;
+    double autonMedium = .4;
+    double autonSlow = 0.15;
 
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
@@ -259,6 +259,75 @@ public class AutonBase extends LinearOpMode {
             theHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
+    public void imuStrafe(double maxDriveSpeed, double strafeDistance)
+    {
+
+        int leftRearTarget;
+        int rightRearTarget;
+        int leftFrontTarget;
+        int rightFrontTarget;
+        int degrees = 90;
+
+        //Adjust the target degrees by 180 for heading
+        if (maxDriveSpeed < 0)
+        {
+            degrees = 270;
+        }
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            leftFrontTarget = theHardwareMap.frontLeftMotor.getCurrentPosition() + (int)(strafeDistance * COUNTS_PER_INCH);
+            leftRearTarget = theHardwareMap.backLeftMotor.getCurrentPosition() + (int)(-strafeDistance * COUNTS_PER_INCH);
+            rightFrontTarget = theHardwareMap.frontRightMotor.getCurrentPosition() + (int)(-strafeDistance * COUNTS_PER_INCH);
+            rightRearTarget = theHardwareMap.backRightMotor.getCurrentPosition() + (int)(strafeDistance * COUNTS_PER_INCH);
+
+            // Set Target FIRST, then turn on RUN_TO_POSITION
+            theHardwareMap.backLeftMotor.setTargetPosition(leftRearTarget);
+            theHardwareMap.backRightMotor.setTargetPosition(rightRearTarget);
+            theHardwareMap.frontLeftMotor.setTargetPosition(leftFrontTarget);
+            theHardwareMap.frontRightMotor.setTargetPosition(rightFrontTarget);
+
+            theHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            theHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            theHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            theHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // Set the required driving speed  (must be positive for RUN_TO_POSITION)
+            // Start driving straight, and then enter the control loop
+            maxDriveSpeed = Math.abs(maxDriveSpeed);
+            theHardwareMap.frontLeftMotor.setPower(maxDriveSpeed);
+            theHardwareMap.backLeftMotor.setPower(maxDriveSpeed);
+            theHardwareMap.frontRightMotor.setPower(maxDriveSpeed);
+            theHardwareMap.backRightMotor.setPower(maxDriveSpeed);
+
+            // keep looping while we are still active, and BOTH motors are running.
+            while (opModeIsActive() &&
+                    (theHardwareMap.backLeftMotor.isBusy() && theHardwareMap.backRightMotor.isBusy()&&
+                            theHardwareMap.frontLeftMotor.isBusy() && theHardwareMap.frontRightMotor.isBusy())) {
+                // Determine required steering to keep on heading
+                turnSpeed = getSteeringCorrection(degrees, P_DRIVE_GAIN);
+
+                // if driving in reverse, the motor correction also needs to be reversed
+                if (strafeDistance < 0)
+                    turnSpeed *= -1.0;
+
+                // Apply the turning correction to the current driving speed.
+                moveRobot(driveSpeed, turnSpeed);
+            }
+
+            // Stop all motion & Turn off RUN_TO_POSITION
+            moveRobot(0, 0);
+            resetHeading();
+            theHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            theHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            theHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            theHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
+
 
     public void encoderStrafe(double speed, double strafeDistance, double timeoutS){
         int newFrontLeftTarget;
