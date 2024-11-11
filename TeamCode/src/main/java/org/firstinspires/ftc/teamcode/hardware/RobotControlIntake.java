@@ -5,8 +5,10 @@ import android.util.Log;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -18,7 +20,7 @@ public class RobotControlIntake {
     LinearOpMode opMode;
     private Telemetry telemetry;
     DcMotorEx intakeMotor;
-    Servo intakeServo;
+    CRServo intakeServo;
     private boolean intakeInitialized = false;
     ControlModes mode = ControlModes.MANUAL;
 
@@ -44,9 +46,10 @@ public class RobotControlIntake {
         }
 
         try {
-            intakeServo = robotHardwareMap.baseHMap.servo.get("Intake Servo");
+            intakeServo = robotHardwareMap.baseHMap.crservo.get("Intake Servo");
             opMode.telemetry.addData("Intake Servo:", "Initialized");
-            intakeServo.setDirection(Servo.Direction.FORWARD);
+            intakeServo.setDirection(CRServo.Direction.FORWARD);
+            intakeServo.setPower(0);
 
         } catch (IllegalArgumentException iae){
             opMode.telemetry.addData("Intake Servo:", iae.getMessage());
@@ -57,7 +60,7 @@ public class RobotControlIntake {
     public void moveIntake(double power ){
         mode = ControlModes.MANUAL;
 
-        //only try moving the arm if initilized
+        //only try moving the arm if initialized
         if (intakeInitialized) {
             intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             double currentPosition = intakeMotor.getCurrentPosition();
@@ -69,9 +72,11 @@ public class RobotControlIntake {
         return intakeMotor.getCurrentPosition();
     }
 
-    public void enableIntake(boolean forwardDirection){
-        if(intakeInitialized){
-
+    public void setPower(double power){
+        if(intakeInitialized)
+        {
+            intakeServo.setPower(power);
         }
     }
+
 }
