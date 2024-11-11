@@ -8,6 +8,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.checkerframework.checker.units.qual.A;
@@ -136,6 +138,10 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             //Allow the driver to lower the arm regardless of position and reset the encoder
+            if (gamepad1.x)
+            {
+                intakeArm.moveArmReset(-0.4);
+            }
 
 
             /*

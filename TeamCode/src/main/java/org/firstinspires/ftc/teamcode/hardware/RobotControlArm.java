@@ -65,29 +65,30 @@ public class RobotControlArm {
 
             double lowerPowerFloat = 0.01;
 
-            //Based on the position we adjsut the power automatically
-            if (currentPosition > 1000)
+            //Based on the position we adjust the power automatically
+            //Going up, we want full power until it is past the vertical position then we want to float down so we don't slam the robot
+            if (power > 0)
             {
-                if (power > 0)
+                if (currentPosition > 1450)
                 {
                     armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                     power = lowerPowerFloat;
                 }
-                else if (power < 0)
+                else
                 {
                     armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 }
+
             }
-            else
+            //Going down, we want to have power until it is across the top then we float down
+            else if (power < 0)
             {
-                //If it is going down, we want to cap it to prevent it from slamming down
-                if (power < 0)
+                if(currentPosition < 1400)
                 {
                     armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
                     power = lowerPowerFloat;
                 }
-                else if (power > 0)
+                else
                 {
                     armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 }
@@ -105,6 +106,18 @@ public class RobotControlArm {
             armMotor.setTargetPosition(armTargetPosition.getEncodedPos());
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armMotor.setPower(0.5);
+        }
+    }
+
+    public void moveArmReset(double power){
+        if (armInitialized) {
+            armMotor.setPower(power);
+            armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            opMode.sleep(500);
+            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armMotor.setDirection(DcMotorEx.Direction.REVERSE);
+            armMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            armMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
 
