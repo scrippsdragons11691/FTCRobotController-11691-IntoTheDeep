@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibra
 import org.firstinspires.ftc.teamcode.hardware.ControlModes;
 import org.firstinspires.ftc.teamcode.hardware.GripperPositions;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlArm;
+import org.firstinspires.ftc.teamcode.hardware.RobotControlIntake;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlLights;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlMechanum;
 import org.firstinspires.ftc.teamcode.hardware.Light;
@@ -62,6 +63,9 @@ public class TeleOpMain extends LinearOpMode {
 
         RobotControlArm intakeArm = new RobotControlArm(theHardwareMap,this);
         intakeArm.initialize();
+
+        RobotControlIntake intake = new RobotControlIntake(theHardwareMap, this);
+        intake.initialize();
 
         //RobotControlLights lights = new RobotControlLights(theHardwareMap, this);
 
@@ -197,8 +201,26 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             //Extend/retract the intake
+            if (currentGamepad2.left_stick_y !=0)
+            {
+                intake.moveIntake(-1 * currentGamepad2.left_stick_y);
+            }
 
             //Turn on/reverse the intake
+            if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper)
+            {
+                intake.setIntakePower(1.0);
+            }
+
+            if(currentGamepad2.left_bumper && !previousGamepad2.left_bumper);
+            {
+                intake.setIntakePower(-1);
+            }
+
+            if(currentGamepad2.right_trigger != 0 && previousGamepad2.right_trigger == 0)
+            {
+                intake.setIntakePower(0);
+            }
 
             //Drive motor encoder debugging
             if ( 1==0 )

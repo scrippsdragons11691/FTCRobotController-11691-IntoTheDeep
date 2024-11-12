@@ -72,11 +72,13 @@ public class RobotControlIntake {
         return intakeMotor.getCurrentPosition();
     }
 
-    public void setPower(double power){
+    public void setIntakePower(double power){
         if(intakeInitialized)
         {
             intakeServo.setPower(power);
         }
     }
+
+    public double getIntakePower() {return intakeServo.getPower();}
 
 }
