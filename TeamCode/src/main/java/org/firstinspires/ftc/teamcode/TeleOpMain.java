@@ -69,7 +69,7 @@ public class TeleOpMain extends LinearOpMode {
 
         //RobotControlLights lights = new RobotControlLights(theHardwareMap, this);
 
-        AutonBase autonBase = new AutonBase();
+        AutonBase autonBase = new AutonBase();  //Do we need this?
 
         gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
 
@@ -178,7 +178,7 @@ public class TeleOpMain extends LinearOpMode {
             //Raise/lower the specimen lifter
             if (currentGamepad2.dpad_up)
             {
-                specimenLifter.moveLifterPower(0.5);
+                specimenLifter.moveLifterPower(0.6);
             }
             else if(previousGamepad2.dpad_up && !currentGamepad2.dpad_up)
             {
@@ -186,7 +186,7 @@ public class TeleOpMain extends LinearOpMode {
             }
             if (currentGamepad2.dpad_down)
             {
-                specimenLifter.moveLifterPower(-0.5);
+                specimenLifter.moveLifterPower(-0.6);
             }
             else if(previousGamepad2.dpad_down && !currentGamepad2.dpad_down)
             {
@@ -212,9 +212,9 @@ public class TeleOpMain extends LinearOpMode {
                 intake.setIntakePower(1.0);
             }
 
-            if(currentGamepad2.left_bumper && !previousGamepad2.left_bumper);
+            if(currentGamepad2.left_bumper && !previousGamepad2.left_bumper)
             {
-                intake.setIntakePower(-1);
+                intake.setIntakePower(-1.0);
             }
 
             if(currentGamepad2.right_trigger != 0 && previousGamepad2.right_trigger == 0)

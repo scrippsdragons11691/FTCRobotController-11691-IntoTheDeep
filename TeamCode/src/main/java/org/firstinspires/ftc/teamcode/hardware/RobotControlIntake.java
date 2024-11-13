@@ -76,6 +76,7 @@ public class RobotControlIntake {
         if(intakeInitialized)
         {
             intakeServo.setPower(power);
+            opMode.telemetry.addData("Intake Power:",intakeServo.getPower());
         }
     }
 

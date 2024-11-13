@@ -260,6 +260,7 @@ public class AutonBase extends LinearOpMode {
         }
     }
 
+    /*
     public void imuStrafe(double maxDriveSpeed, double strafeDistance)
     {
 
@@ -327,7 +328,7 @@ public class AutonBase extends LinearOpMode {
             theHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-
+    */
 
     public void encoderStrafe(double speed, double strafeDistance, double timeoutS){
         int newFrontLeftTarget;
