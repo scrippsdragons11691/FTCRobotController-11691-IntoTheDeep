@@ -31,6 +31,7 @@ public class RobotCameraLight {
         try {
             light = robotHardwareMap.baseHMap.servo.get("Light");
             lightInitialized = true;
+            light.setPosition(0);
             opMode.telemetry.addData("Light:", "Initialized");
         }
         catch (IllegalArgumentException iae){

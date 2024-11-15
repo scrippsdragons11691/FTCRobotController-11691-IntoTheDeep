@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 public enum LifterPositions {
     UNKNOWN("UNKNOWN", -1),
-    TOP("TOP",7500),
-    TOP_DELIVER("TOP_DELIVER",5800),
+    TOP("TOP",7300),
+    TOP_DELIVER("TOP_DELIVER",5325),
     BOTTOM ("BOTTOM",0),
     PICKUP("PICKUP",525);
 

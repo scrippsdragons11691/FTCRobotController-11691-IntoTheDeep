@@ -95,7 +95,7 @@ public class RobotControlSpecimenLifter {
             int currentPosition = specimenMotor.getCurrentPosition();
             specimenMotor.setTargetPosition(lifterTargetPosition.getEncodedPos());
             specimenMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            specimenMotor.setPower(0.5);
+            specimenMotor.setPower(0.9);
         }
     }
 

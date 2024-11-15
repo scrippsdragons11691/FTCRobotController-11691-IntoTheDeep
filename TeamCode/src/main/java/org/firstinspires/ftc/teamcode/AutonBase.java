@@ -180,6 +180,25 @@ public class AutonBase extends LinearOpMode {
                     (runtime.seconds() < timeoutS) &&
                     (theHardwareMap.frontLeftMotor.isBusy() && theHardwareMap.backLeftMotor.isBusy()
                             && theHardwareMap.frontRightMotor.isBusy() && theHardwareMap.backRightMotor.isBusy())) {
+                //Adjust the speed down as we get closer to the target position
+                //We check the right front motor and only apply slowdown for speeds above autonslow
+                if ((Math.abs(speed) > autonSlow) && (Math.abs(theHardwareMap.frontRightMotor.getCurrentPosition() - theHardwareMap.frontRightMotor.getTargetPosition()) < 250))
+                {
+                    theHardwareMap.frontLeftMotor.setPower((Math.abs(speed * 0.66)));
+                    theHardwareMap.backLeftMotor.setPower((Math.abs(speed * 0.66)));
+                    theHardwareMap.frontRightMotor.setPower((Math.abs(speed * 0.66)));
+                    theHardwareMap.backRightMotor.setPower((Math.abs(speed * 0.66)));
+                }
+
+                //Slow down further as we get to the stop point
+                else if ((Math.abs(speed) > autonSlow) && (Math.abs(theHardwareMap.frontRightMotor.getCurrentPosition() - theHardwareMap.frontRightMotor.getTargetPosition()) < 125))
+                {
+                    theHardwareMap.frontLeftMotor.setPower((Math.abs(speed * 0.33)));
+                    theHardwareMap.backLeftMotor.setPower((Math.abs(speed * 0.33)));
+                    theHardwareMap.frontRightMotor.setPower((Math.abs(speed * 0.33)));
+                    theHardwareMap.backRightMotor.setPower((Math.abs(speed * 0.33)));
+                }
+
                 telemetry.addData("Running to",  " %7d :%7d :%7d :%7d",
                         newFrontLeftTarget,  newBackLeftTarget, newFrontRightTarget, newBackRightTarget);
                 telemetry.addData("Currently at",  " at %7d :%7d :%7d :%7d",
@@ -248,6 +267,19 @@ public class AutonBase extends LinearOpMode {
 
                 // Apply the turning correction to the current driving speed.
                 moveRobot(driveSpeed, turnSpeed);
+
+                //Adjust the speed down as we get closer to the target position
+                //We check the right front motor and only apply slowdown for speeds above autonslow
+                if ((Math.abs(maxDriveSpeed) > autonSlow) && (Math.abs(theHardwareMap.frontRightMotor.getCurrentPosition() - theHardwareMap.frontRightMotor.getTargetPosition()) < 250))
+                {
+                    //driveSpeed = driveSpeed *.066;
+                }
+
+                //Slow down further as we get to the stop point
+                else if ((Math.abs(maxDriveSpeed) > autonSlow) && (Math.abs(theHardwareMap.frontRightMotor.getCurrentPosition() - theHardwareMap.frontRightMotor.getTargetPosition()) < 125))
+                {
+                    //driveSpeed = driveSpeed *.033;
+                }
             }
 
             // Stop all motion & Turn off RUN_TO_POSITION
@@ -260,7 +292,6 @@ public class AutonBase extends LinearOpMode {
         }
     }
 
-    /*
     public void imuStrafe(double maxDriveSpeed, double strafeDistance)
     {
 
@@ -328,7 +359,7 @@ public class AutonBase extends LinearOpMode {
             theHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    */
+
 
     public void encoderStrafe(double speed, double strafeDistance, double timeoutS){
         int newFrontLeftTarget;

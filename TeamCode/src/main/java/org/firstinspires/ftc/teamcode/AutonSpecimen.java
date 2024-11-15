@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.hardware.ArmPositions;
 import org.firstinspires.ftc.teamcode.hardware.GripperPositions;
 import org.firstinspires.ftc.teamcode.hardware.LifterPositions;
 import org.firstinspires.ftc.teamcode.hardware.RobotCameraLight;
+import org.firstinspires.ftc.teamcode.hardware.RobotControlIntake;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
@@ -28,6 +29,9 @@ public class AutonSpecimen extends AutonBase{
         initialize();
         RobotCameraLight cameraLight = new RobotCameraLight(theHardwareMap, this);
         cameraLight.initialize();
+
+        RobotControlIntake intake = new RobotControlIntake(theHardwareMap, this);
+        intake.initialize();
 
         //Need some way to determine red vs blue
 
@@ -79,31 +83,51 @@ public class AutonSpecimen extends AutonBase{
 
         //Set the arm motor to the drive position
         intakeArm.moveArmEncoded(ArmPositions.DRIVE);
-        sleep(100);
+        //sleep(100);
+
+        //close the gripper
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP);
+        sleep(500);
 
         //push 1st sample to observation zone
-        encoderStrafe(autonMedium,-24,5);
-
-        specimenLifter.moveLifterEncoded(LifterPositions.TOP);
-        encoderStrafe(autonMedium,-3,5);
+        encoderStrafe(autonMedium,-20,5);
+        sleep(750);
+        encoderStrafe(autonSlow,-3.5,5);
+        sleep(1000);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
+        sleep(1000);
         gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
+        //sleep(1000);
 
         //Drive to push samples
         encoderStrafe(autonMedium,9,5);
         specimenLifter.moveLifterEncoded(LifterPositions.PICKUP);
-        imuDrive(autonMedium, 24,0);
+        imuDrive(autonMedium, 26,0);
         encoderStrafe(autonMedium, -34, 5);
-        imuDrive(autonMedium,13.5,0);
-        imuTurn(autonMedium,90);
-        imuDrive(autonMedium,48,0);
+        imuDrive(autonSlow,13.5,0);
+        //imuTurn(autonMedium,90);
+        //intake.setIntakePower(-1.0);
+        //intakeArm.moveArmEncoded(ArmPositions.PICKUP);
+        //imuDrive(autonMedium,48,0);
+
+        //we spin around to use the plow on the left side of the robot
+        imuTurn(autonMedium,180);
+        encoderStrafe(autonMedium,-48,8);
 
         //Push the second sample
+        /*
         imuDrive(autonMedium,-48,0);
         encoderStrafe(autonMedium,-8.5,5);
         imuDrive(autonMedium, 49, 0);
-        imuDrive(autonMedium,-12,0);
-        imuTurn(autonSlow,90);
+        */
+
+        //Back up out of the observation zone
+        encoderStrafe(autonMedium,12,5);
+
+        //Align to the wall
+        //imuDrive(autonMedium,-12,0);
+        //imuTurn(autonSlow,90);
 
         //Find specimen
         if (cameraInitialized && colorLocator != null)
@@ -112,6 +136,12 @@ public class AutonSpecimen extends AutonBase{
 
             List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
             ColorBlobLocatorProcessor.Util.filterByArea(50, 20000, blobs);  // filter out very small blobs.
+
+            //If we don't see any samples, wait 1.5 seconds
+            if (blobs.isEmpty())
+            {
+                sleep(1500);
+            }
 
             for (ColorBlobLocatorProcessor.Blob b : blobs) {
                 RotatedRect boxFit = b.getBoxFit();
@@ -136,14 +166,19 @@ public class AutonSpecimen extends AutonBase{
             //Drive back/forth to align with the specimen
             if (adjustDistance != 0) {
                 imuDrive(autonSlow, adjustDistance, 0);
+
             }
         }
+
+        //Turn off the light to warn the human player that we are coming in
+        cameraLight.adjustLight(0);
 
         //Move to the wall
         encoderStrafe(autonMedium,-12,5);
 
         //grab specimen
         gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
+        sleep(500);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
 
         encoderStrafe(autonMedium,3,5);
@@ -166,7 +201,7 @@ public class AutonSpecimen extends AutonBase{
         intakeArm.moveArmEncoded(ArmPositions.PICKUP);
 
         //Turn off the light
-        cameraLight.adjustLight(0);
+        //cameraLight.adjustLight(0);
     }
 
 }

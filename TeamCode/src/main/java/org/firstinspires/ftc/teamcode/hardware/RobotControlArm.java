@@ -83,7 +83,7 @@ public class RobotControlArm {
             //Going down, we want to have power until it is across the top then we float down
             else if (power < 0)
             {
-                if(currentPosition < 1400)
+                if(currentPosition < 1300)
                 {
                     armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                     power = lowerPowerFloat;

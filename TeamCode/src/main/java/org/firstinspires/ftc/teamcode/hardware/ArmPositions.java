@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 public enum ArmPositions {
     UNKNOWN("UNKNOWN", -1),
     DRIVE("DRIVE",250),
-    PICKUP("PICKUP",0),
+    PICKUP("PICKUP",70),
     DELIVER("DELIVER",100);
 
     private final String position;

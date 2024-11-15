@@ -106,9 +106,9 @@ public class AutonTest extends AutonBase {
         //Set the arm motor to the drive position
         intakeArm.moveArmEncoded(ArmPositions.DRIVE);
 
-        sleep(2000);
+        sleep(500);
 
-        imuDrive(autonSlow,20,0);
+        imuDrive(autonFast,20,0);
 
         //imuDrive(autonSlow,adjustDistance,0);
 

@@ -14,8 +14,10 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.teamcode.hardware.ArmPositions;
 import org.firstinspires.ftc.teamcode.hardware.ControlModes;
 import org.firstinspires.ftc.teamcode.hardware.GripperPositions;
+import org.firstinspires.ftc.teamcode.hardware.RobotCameraLight;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlArm;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlIntake;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlLights;
@@ -67,6 +69,9 @@ public class TeleOpMain extends LinearOpMode {
         RobotControlIntake intake = new RobotControlIntake(theHardwareMap, this);
         intake.initialize();
 
+        RobotCameraLight cameraLight = new RobotCameraLight(theHardwareMap, this);
+        cameraLight.initialize();
+
         //RobotControlLights lights = new RobotControlLights(theHardwareMap, this);
 
         AutonBase autonBase = new AutonBase();  //Do we need this?
@@ -89,8 +94,6 @@ public class TeleOpMain extends LinearOpMode {
         //Initialize remaining variables
         double loopTimeStart = 0;
         boolean slowMode = true;
-        //lights.switchLight(Light.LED1, LightMode.OFF);
-		//lights.switchLight(Light.LED2, LightMode.GREEN);
         boolean showTelemetry = true;
 
         //create some gamepads to look at debouncing
@@ -120,8 +123,8 @@ public class TeleOpMain extends LinearOpMode {
 
             //Speed values for slow mode
             if (slowMode) {
-                drive *= 0.3;
-                strafe *= 0.3;
+                drive *= 0.45;
+                strafe *= 0.45;
                 twist *= 0.3;
 
             } else { // non slow mode is only 75% power
@@ -135,10 +138,10 @@ public class TeleOpMain extends LinearOpMode {
             //slow mode
             if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
                 slowMode = true;
-                //lights.switchLight(Light.LED2, LightMode.GREEN);
+                cameraLight.adjustLight(0);
             } else if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
                 slowMode = false;
-                //lights.switchLight(Light.LED2, LightMode.YELLOW);
+                cameraLight.adjustLight(0.25);
             }
 
             //Allow the driver to lower the arm regardless of position and reset the encoder
@@ -193,6 +196,12 @@ public class TeleOpMain extends LinearOpMode {
                 specimenLifter.moveLifterPower(0);
             }
 
+            //arm drive posistion
+            if (currentGamepad2.b && !previousGamepad2.b)
+            {
+                intakeArm.moveArmEncoded(ArmPositions.DRIVE);
+            }
+
             //Change the intake arm position
             if (currentGamepad2.right_stick_y != 0)
             {
@@ -204,6 +213,7 @@ public class TeleOpMain extends LinearOpMode {
             if (currentGamepad2.left_stick_y !=0)
             {
                 intake.moveIntake(-1 * currentGamepad2.left_stick_y);
+                telemetry.addData("Arm Extension:",intake.getIntakeEncodedPosition());
             }
 
             //Turn on/reverse the intake

@@ -48,7 +48,7 @@ public class RobotControlIntake {
         try {
             intakeServo = robotHardwareMap.baseHMap.crservo.get("Intake Servo");
             opMode.telemetry.addData("Intake Servo:", "Initialized");
-            intakeServo.setDirection(CRServo.Direction.FORWARD);
+            intakeServo.setDirection(CRServo.Direction.REVERSE);
             intakeServo.setPower(0);
 
         } catch (IllegalArgumentException iae){
