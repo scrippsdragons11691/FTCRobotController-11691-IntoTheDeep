@@ -49,8 +49,8 @@ public class AutonBase extends LinearOpMode {
 
 
     double autonFast = .6;
-    double autonMedium = .4;
-    double autonSlow = 0.15;
+    double autonMedium = .5;
+    double autonSlow = 0.25;
 
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV

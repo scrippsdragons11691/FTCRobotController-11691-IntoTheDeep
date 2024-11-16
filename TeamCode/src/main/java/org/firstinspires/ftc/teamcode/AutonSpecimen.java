@@ -83,37 +83,36 @@ public class AutonSpecimen extends AutonBase{
 
         //Set the arm motor to the drive position
         intakeArm.moveArmEncoded(ArmPositions.DRIVE);
-        //sleep(100);
 
         //close the gripper
         gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP);
-        sleep(500);
+        sleep(750);
 
         //push 1st sample to observation zone
         encoderStrafe(autonMedium,-20,5);
-        sleep(750);
+        sleep(500);
         encoderStrafe(autonSlow,-3.5,5);
         sleep(1000);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
         sleep(1000);
         gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
-        //sleep(1000);
 
         //Drive to push samples
         encoderStrafe(autonMedium,9,5);
         specimenLifter.moveLifterEncoded(LifterPositions.PICKUP);
-        imuDrive(autonMedium, 26,0);
+        imuDrive(autonMedium, 25,0);
         encoderStrafe(autonMedium, -34, 5);
-        imuDrive(autonSlow,13.5,0);
+        imuDrive(autonMedium,12,0);
         //imuTurn(autonMedium,90);
         //intake.setIntakePower(-1.0);
         //intakeArm.moveArmEncoded(ArmPositions.PICKUP);
         //imuDrive(autonMedium,48,0);
 
         //we spin around to use the plow on the left side of the robot
-        imuTurn(autonMedium,180);
-        encoderStrafe(autonMedium,-48,8);
+        imuTurn(autonSlow,90);
+        imuTurn(autonSlow,90);
+        encoderStrafe(autonMedium,-45,5);
 
         //Push the second sample
         /*
@@ -123,11 +122,9 @@ public class AutonSpecimen extends AutonBase{
         */
 
         //Back up out of the observation zone
-        encoderStrafe(autonMedium,12,5);
+        encoderStrafe(autonFast,12,5);
 
-        //Align to the wall
-        //imuDrive(autonMedium,-12,0);
-        //imuTurn(autonSlow,90);
+        sleep(4000);
 
         //Find specimen
         if (cameraInitialized && colorLocator != null)
@@ -165,8 +162,9 @@ public class AutonSpecimen extends AutonBase{
 
             //Drive back/forth to align with the specimen
             if (adjustDistance != 0) {
+                telemetry.addData("Adjust Distance",adjustDistance);
+                telemetry.update();
                 imuDrive(autonSlow, adjustDistance, 0);
-
             }
         }
 
@@ -174,34 +172,37 @@ public class AutonSpecimen extends AutonBase{
         cameraLight.adjustLight(0);
 
         //Move to the wall
-        encoderStrafe(autonMedium,-12,5);
+        encoderStrafe(autonMedium,-14,5);
 
         //grab specimen
         gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
         sleep(500);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
-
-        encoderStrafe(autonMedium,3,5);
+        sleep(250);
+        encoderStrafe(autonMedium,5,5);
         //specimenLifter.moveLifterEncoded(LifterPositions.BOTTOM);
 
         //Drive back to submersisble while accounting for the back/forth adjustment
-        imuDrive(autonMedium,47 + adjustDistance,0);
-        imuTurn(autonSlow,180);
-        encoderStrafe(autonMedium,-17,5);
+        imuDrive(autonMedium,44 + adjustDistance,0);
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP);
+        imuTurn(autonSlow,90);
+        imuTurn(autonSlow,90);
+        encoderStrafe(autonMedium,-16,5);
 
         //Deliver the specimen
-        specimenLifter.moveLifterEncoded(LifterPositions.TOP);
-        encoderStrafe(autonSlow,3,5);
+        //encoderStrafe(autonSlow,2.5,5);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
+        sleep(500);
         gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
-        encoderStrafe(autonSlow,3,5);
+        sleep(500);
+        encoderStrafe(autonFast,4,5);
 
         //Reset the drive motors to 0 before auton ends
         specimenLifter.moveLifterEncoded(LifterPositions.BOTTOM);
         intakeArm.moveArmEncoded(ArmPositions.PICKUP);
 
-        //Turn off the light
-        //cameraLight.adjustLight(0);
+        //Give the robot any remaining time to lower the arms to their starting position
+        sleep(5000);
     }
 
 }
