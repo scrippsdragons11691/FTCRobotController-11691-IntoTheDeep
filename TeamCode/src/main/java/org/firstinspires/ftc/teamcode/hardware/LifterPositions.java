@@ -6,7 +6,7 @@ public enum LifterPositions {
     TOP("TOP",7300),
     TOP_DELIVER("TOP_DELIVER",5325),
     BOTTOM ("BOTTOM",0),
-    PICKUP("PICKUP",525);
+    PICKUP("PICKUP",475);
 
     private final String position;
     private final int encodedPos;

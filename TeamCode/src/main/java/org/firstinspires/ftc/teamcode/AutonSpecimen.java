@@ -87,12 +87,12 @@ public class AutonSpecimen extends AutonBase{
         //close the gripper
         gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP);
-        sleep(750);
+        sleep(1000);
 
         //push 1st sample to observation zone
         encoderStrafe(autonMedium,-20,5);
         sleep(500);
-        encoderStrafe(autonSlow,-3.5,5);
+        encoderStrafe(autonSlow,-4.5,5);
         sleep(1000);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
         sleep(1000);
@@ -172,13 +172,13 @@ public class AutonSpecimen extends AutonBase{
         cameraLight.adjustLight(0);
 
         //Move to the wall
-        encoderStrafe(autonMedium,-14,5);
+        encoderStrafe(autonMedium,-13,5);
 
         //grab specimen
         gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
         sleep(500);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
-        sleep(250);
+        sleep(500);
         encoderStrafe(autonMedium,5,5);
         //specimenLifter.moveLifterEncoded(LifterPositions.BOTTOM);
 
@@ -187,7 +187,7 @@ public class AutonSpecimen extends AutonBase{
         specimenLifter.moveLifterEncoded(LifterPositions.TOP);
         imuTurn(autonSlow,90);
         imuTurn(autonSlow,90);
-        encoderStrafe(autonMedium,-16,5);
+        encoderStrafe(autonMedium,-15,5);
 
         //Deliver the specimen
         //encoderStrafe(autonSlow,2.5,5);

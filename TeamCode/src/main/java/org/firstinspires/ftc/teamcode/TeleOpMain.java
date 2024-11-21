@@ -74,7 +74,7 @@ public class TeleOpMain extends LinearOpMode {
 
         //RobotControlLights lights = new RobotControlLights(theHardwareMap, this);
 
-        AutonBase autonBase = new AutonBase();  //Do we need this?
+        //AutonBase autonBase = new AutonBase();  //Do we need this?
 
         gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
 
@@ -85,8 +85,8 @@ public class TeleOpMain extends LinearOpMode {
 
         // do something in init mode?
         while (opModeInInit()) {
-            //telemetry.addData("Robot", "Initialized successfully. Ready to run?");
-            //telemetry.update();
+            telemetry.addData("Robot", "Initialized successfully. Ready to run?");
+            telemetry.update();
         }
 
         //lights.switchLight(Light.ALL, LightMode.OFF);
