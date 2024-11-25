@@ -42,7 +42,7 @@ public class AutonSpecimen extends AutonBase{
         try
         {
             colorLocator = new ColorBlobLocatorProcessor.Builder()
-                    .setTargetColorRange(ColorRange.BLUE)
+                    .setTargetColorRange(ColorRange.RED)
                     .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)
                     .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 0.8, 1, -0.1))
                     .setDrawContours(true)
@@ -89,17 +89,17 @@ public class AutonSpecimen extends AutonBase{
         specimenLifter.moveLifterEncoded(LifterPositions.TOP);
         sleep(1000);
 
-        //push 1st sample to observation zone
+        //hang initial specimen
         encoderStrafe(autonMedium,-20,5);
         sleep(500);
-        encoderStrafe(autonSlow,-4.5,5);
+        encoderStrafe(autonSlow,-5.5,5);
         sleep(1000);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
         sleep(1000);
         gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
 
         //Drive to push samples
-        encoderStrafe(autonMedium,9,5);
+        encoderStrafe(autonMedium,10,5);
         specimenLifter.moveLifterEncoded(LifterPositions.PICKUP);
         imuDrive(autonMedium, 25,0);
         encoderStrafe(autonMedium, -34, 5);
@@ -158,6 +158,7 @@ public class AutonSpecimen extends AutonBase{
                 adjustDistance = (rightTarget - centerPixel) / pixelsPerInch;
             } else if (rightTarget < centerPixel) {
                 adjustDistance = (centerPixel - rightTarget) / pixelsPerInch * -1;
+                adjustDistance = adjustDistance + 1.5;  //adjusting based on game performance
             }
 
             //Drive back/forth to align with the specimen
@@ -172,22 +173,22 @@ public class AutonSpecimen extends AutonBase{
         cameraLight.adjustLight(0);
 
         //Move to the wall
-        encoderStrafe(autonMedium,-13,5);
+        encoderStrafe(autonMedium,-14,5);
 
         //grab specimen
         gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
         sleep(500);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
         sleep(500);
-        encoderStrafe(autonMedium,5,5);
+        encoderStrafe(autonMedium,6,5);
         //specimenLifter.moveLifterEncoded(LifterPositions.BOTTOM);
 
         //Drive back to submersisble while accounting for the back/forth adjustment
-        imuDrive(autonMedium,44 + adjustDistance,0);
+        imuDrive(autonMedium,46 - adjustDistance,0);
         specimenLifter.moveLifterEncoded(LifterPositions.TOP);
         imuTurn(autonSlow,90);
         imuTurn(autonSlow,90);
-        encoderStrafe(autonMedium,-15,5);
+        encoderStrafe(autonMedium,-18.5,5);
 
         //Deliver the specimen
         //encoderStrafe(autonSlow,2.5,5);
