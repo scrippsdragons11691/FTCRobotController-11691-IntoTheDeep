@@ -270,15 +270,16 @@ public class AutonBase extends LinearOpMode {
 
                 //Adjust the speed down as we get closer to the target position
                 //We check the right front motor and only apply slowdown for speeds above autonslow
-                if ((Math.abs(maxDriveSpeed) > autonSlow) && (Math.abs(theHardwareMap.frontRightMotor.getCurrentPosition() - theHardwareMap.frontRightMotor.getTargetPosition()) < 250))
+                if ((Math.abs(maxDriveSpeed) > autonSlow) && (Math.abs(theHardwareMap.frontRightMotor.getCurrentPosition() - theHardwareMap.frontRightMotor.getTargetPosition()) < 75))
                 {
-                    //driveSpeed = driveSpeed *.066;
+                    driveSpeed = driveSpeed *.5;
                 }
 
                 //Slow down further as we get to the stop point
-                else if ((Math.abs(maxDriveSpeed) > autonSlow) && (Math.abs(theHardwareMap.frontRightMotor.getCurrentPosition() - theHardwareMap.frontRightMotor.getTargetPosition()) < 125))
+                //We also multiply by .5 again, which means we should be driving at .25 speed if the code also worked
+                else if ((Math.abs(maxDriveSpeed) > autonSlow) && (Math.abs(theHardwareMap.frontRightMotor.getCurrentPosition() - theHardwareMap.frontRightMotor.getTargetPosition()) < 25))
                 {
-                    //driveSpeed = driveSpeed *.033;
+                    driveSpeed = driveSpeed *.5;
                 }
             }
 
@@ -420,7 +421,7 @@ public class AutonBase extends LinearOpMode {
             theHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             theHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);   // optional pause after each move.
+            //sleep(250);   // optional pause after each move.
         }
     }
 
