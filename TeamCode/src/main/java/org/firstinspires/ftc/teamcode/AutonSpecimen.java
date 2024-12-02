@@ -84,19 +84,7 @@ public class AutonSpecimen extends AutonBase{
         //Set the arm motor to the drive position
         intakeArm.moveArmEncoded(ArmPositions.DRIVE);
 
-        //close the gripper
-        gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
-        specimenLifter.moveLifterEncoded(LifterPositions.TOP);
-        sleep(1000);
-
-        //hang initial specimen
-        encoderStrafe(autonMedium,-20,5);
-        sleep(500);
-        encoderStrafe(autonSlow,-5.5,5);
-        sleep(1000);
-        specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
-        sleep(1000);
-        gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
+        firstSpecimenDeliver();
 
         //Drive to push samples
         encoderStrafe(autonMedium,10,5);

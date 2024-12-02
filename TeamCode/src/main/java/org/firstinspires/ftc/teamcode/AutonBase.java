@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 //import org.firstinspires.ftc.teamcode.hardware.LightMode;
 import org.firstinspires.ftc.teamcode.hardware.ControlModes;
 import org.firstinspires.ftc.teamcode.hardware.GripperPositions;
+import org.firstinspires.ftc.teamcode.hardware.LifterPositions;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlArm;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlGripperServo;
 import org.firstinspires.ftc.teamcode.hardware.RobotControlLights;
@@ -143,7 +144,21 @@ public class AutonBase extends LinearOpMode {
     }
 
 
+    public void firstSpecimenDeliver(){
+        //close the gripper
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP);
+        sleep(1000);
 
+        //hang initial specimen
+        encoderStrafe(autonMedium,-20,5);
+        sleep(500);
+        encoderStrafe(autonSlow,-5.5,5);
+        sleep(1000);
+        specimenLifter.moveLifterEncoded(LifterPositions.TOP_DELIVER);
+        sleep(1000);
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_OPEN);
+    }
     public void encoderDrive (double speed, double inches, double timeoutS) {
         int newFrontLeftTarget;
         int newBackLeftTarget;
