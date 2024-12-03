@@ -227,7 +227,7 @@ public class TeleOpMain extends LinearOpMode {
                 intake.setIntakePower(-1.0);
             }
 
-            if(currentGamepad2.right_trigger != 0 && previousGamepad2.right_trigger == 0)
+            if(currentGamepad2.b && !previousGamepad2.b)
             {
                 intake.setIntakePower(0);
             }
