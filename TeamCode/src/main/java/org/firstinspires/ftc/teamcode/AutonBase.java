@@ -151,7 +151,7 @@ public class AutonBase extends LinearOpMode {
         sleep(1000);
 
         //hang initial specimen
-        encoderStrafe(autonMedium,-20,5);
+        encoderStrafe(autonMedium,-19,5);
         sleep(500);
         encoderStrafe(autonSlow,-5.5,5);
         sleep(1000);

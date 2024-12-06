@@ -5,20 +5,24 @@ import android.util.Log;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotHardwareMap;
 
 public class RobotControlArm {
 
-
     static final String TAG = "RobotControlArm";
     RobotHardwareMap robotHardwareMap;
     LinearOpMode opMode;
     private Telemetry telemetry;
     private boolean dashLogging = true;
+
+    String potentiometerLocation = "Arm Pot";
+    AnalogInput potentiometer;
 
     DcMotorEx armMotor;
     private boolean armInitialized = false;
@@ -41,6 +45,9 @@ public class RobotControlArm {
             armMotor.setDirection(DcMotorEx.Direction.REVERSE);
             armMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             armMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+            potentiometer = robotHardwareMap.baseHMap.get(AnalogInput.class, potentiometerLocation);
+
             armInitialized = true;
             opMode.telemetry.addData("Arm Motor", "initialized");
         } catch (IllegalArgumentException iae){
@@ -121,14 +128,65 @@ public class RobotControlArm {
         }
     }
 
-    public void stopArmWithHold(){
-        if (armInitialized) {
-            if (mode == ControlModes.MANUAL) {
-                //hold code
-                double currentPosition = armMotor.getCurrentPosition();
-                double holdPower = 0.3;
-                armMotor.setPower(holdPower);
+    public void moveArmPot(ArmPositionsPotentiometer armPositionsPotentiometer, RobotControlArm armMotor){
+        double power = .75;
+        double positionTolerance = 0.1;
+        int timeout = 3;
+
+        ElapsedTime runtime = new ElapsedTime();
+
+        runtime.reset();
+        while (
+                (Math.abs(getCurrentPotPosition() - armPositionsPotentiometer.getVoltagePos()) > positionTolerance)
+                && (runtime.seconds() < timeout)
+        )
+        {
+            telemetry.addData("Potentiometer Position: ", getCurrentPotPosition());
+            telemetry.update();
+            if (getCurrentPotPosition() > armPositionsPotentiometer.getVoltagePos())
+            {
+                power = -power;
             }
+            else if (getCurrentPotPosition() == armPositionsPotentiometer.getVoltagePos())
+            {
+                power = 0.2;
+            }
+            else
+            {
+                power = power;
+            }
+
+            //If it is close in position, we want to reduce power to keep it from fighting itself
+            if (Math.abs(getCurrentPotPosition() - armPositionsPotentiometer.getVoltagePos()) < .2)
+            {
+                power = power * .25;
+            }
+
+            armMotor.moveArmPower(power);
+        }
+
+        armMotor.stopArmWithHold();
+        telemetry.addData("Final Position: ", this.getCurrentPotPosition());
+        telemetry.update();
+    }
+
+    public void stopArmWithHold(){
+        if (armInitialized)
+        {
+            double currentPosition = getCurrentPotPosition();
+            double holdPower = 0.0;
+
+            if (currentPosition < 1)
+            {
+                holdPower = 0.5;
+            }
+            else if (currentPosition > 1 && currentPosition < ArmPositionsPotentiometer.ARM_TOP_DELIVER.getVoltagePos())
+            {
+                holdPower = 0;
+            }
+
+            armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            armMotor.setPower(holdPower);
         }
     }
 
@@ -141,6 +199,7 @@ public class RobotControlArm {
     public void addArmTelemetry(){
         if (armInitialized){
             telemetry.addData("armEncoder:", armMotor.getCurrentPosition());
+            telemetry.addData("armPotentiometer:", this.getCurrentPotPosition());
         } else {
             telemetry.addData("armEncoder:", "Uninitialized!");
         }
@@ -149,4 +208,9 @@ public class RobotControlArm {
     public double getArmEncodedPosition(){
         return armMotor.getCurrentPosition();
     }
+
+    public double getCurrentPotPosition(){
+        return potentiometer.getVoltage();
+    }
+
 }

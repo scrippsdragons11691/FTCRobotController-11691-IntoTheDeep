@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.teamcode.hardware.ArmPositions;
+import org.firstinspires.ftc.teamcode.hardware.ArmPositionsPotentiometer;
 import org.firstinspires.ftc.teamcode.hardware.ControlModes;
 import org.firstinspires.ftc.teamcode.hardware.GripperPositions;
 import org.firstinspires.ftc.teamcode.hardware.RobotCameraLight;
@@ -199,14 +200,22 @@ public class TeleOpMain extends LinearOpMode {
             //arm drive posistion
             if (currentGamepad2.b && !previousGamepad2.b)
             {
-                intakeArm.moveArmEncoded(ArmPositions.DRIVE);
+                //intakeArm.moveArmEncoded(ArmPositions.DRIVE);
+                intakeArm.moveArmPot(ArmPositionsPotentiometer.ARM_DRIVE, intakeArm);
+            }
+
+            //Arm up to deliver samples
+            if (currentGamepad2.y && !previousGamepad2.y)
+            {
+                intakeArm.moveArmPot(ArmPositionsPotentiometer.ARM_TOP_DELIVER, intakeArm);
             }
 
             //Change the intake arm position
             if (currentGamepad2.right_stick_y != 0)
             {
                 intakeArm.moveArmPower(-1 * currentGamepad2.right_stick_y);
-                telemetry.addData("Arm Position:",intakeArm.getArmEncodedPosition());
+                telemetry.addData("Arm Encoded Position:",intakeArm.getArmEncodedPosition());
+                telemetry.addData("Arm Pot Position:",intakeArm.getCurrentPotPosition());
             }
 
             //Extend/retract the intake
