@@ -176,7 +176,7 @@ public class AutonSpecimen extends AutonBase{
         specimenLifter.moveLifterEncoded(LifterPositions.TOP);
         imuTurn(autonSlow,90);
         imuTurn(autonSlow,90);
-        encoderStrafe(autonMedium,-18.5,5);
+        encoderStrafe(autonMedium,-17,5);
 
         //Deliver the specimen
         //encoderStrafe(autonSlow,2.5,5);

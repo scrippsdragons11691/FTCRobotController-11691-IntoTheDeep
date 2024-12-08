@@ -77,8 +77,6 @@ public class TeleOpMain extends LinearOpMode {
 
         //AutonBase autonBase = new AutonBase();  //Do we need this?
 
-        gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
-
         waitForStart();
 
         telemetry.addData("Robot", "Initialized successfully");
@@ -102,6 +100,8 @@ public class TeleOpMain extends LinearOpMode {
         Gamepad currentGamepad2 = new Gamepad();
         Gamepad previousGamepad1 = new Gamepad();
         Gamepad previousGamepad2 = new Gamepad();
+
+        gripperServo.moveToPosition(GripperPositions.GRIPPER_CLOSED);
 
         double currentClaw = 0.8;
         //Main Loop
@@ -198,10 +198,10 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             //arm drive posistion
-            if (currentGamepad2.b && !previousGamepad2.b)
+            if (currentGamepad2.x && !previousGamepad2.x)
             {
-                //intakeArm.moveArmEncoded(ArmPositions.DRIVE);
-                intakeArm.moveArmPot(ArmPositionsPotentiometer.ARM_DRIVE, intakeArm);
+                intakeArm.moveArmEncoded(ArmPositions.DRIVE);
+                //intakeArm.moveArmPot(ArmPositionsPotentiometer.ARM_DRIVE, intakeArm);
             }
 
             //Arm up to deliver samples

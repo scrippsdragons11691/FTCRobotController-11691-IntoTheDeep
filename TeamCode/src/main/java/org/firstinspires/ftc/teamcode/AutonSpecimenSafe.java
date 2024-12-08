@@ -60,7 +60,7 @@ public class AutonSpecimenSafe extends AutonBase{
         //Push the second sample
 
         encoderStrafe(autonMedium,-45,5);
-        imuDrive(autonMedium,14,0);
+        imuDrive(autonMedium,16,0);
         encoderStrafe(autonMedium, 45, 5);
 
 
